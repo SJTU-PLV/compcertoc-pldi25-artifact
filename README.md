@@ -23,21 +23,81 @@ to ensure that the hyperlinks work properly.
 
 ## 2. List of Claims
 
-We list the definitions, lemmas and theorems from each section of
-the paper below along with the references to their corresponding Coq
-formalization in the artifact.
+We list the definitions, lemmas and theorems from each section of the paper below along with the references to their corresponding Coq formalization in the artifact.
 <!-- A more organized and complete explanation -->
 <!-- of the Coq formalization is located in the section "Structure of the Formal Proofs" below. -->
 
 ### Section 2
 
+- The *private memory* (line 222-227) is formally defined as [loc_unmapped](CompCertOC/common/Events.v#L616) and [loc_out_of_reach](CompCertOC/common/Events.v#L619) in the Coq file [common/Events](CompCertOC/common/Events.v).
+
 ### Section 3
+
+- The memory model from Section 3.1 can be found in [common/Memory.v](CompCertOC/common/Memory.v). The nominal interface for the memory model (line 377) 
+is defined as [`Module Type SUP`](CompCertOC/common/Memtype.v) in the Coq file [common/Memtype.v](CompCertOC/common/Memtype.v).
+
+- Definition 3.1 from Section 3.2 (line 404)   corresponds to [fsim_properties](CompCertOC/common/Smallstep.v#L597) in the Coq file
+  [common/Smallstep.v](CompCertOC/common/Smallstep.v). 
+  
+- Definition 3.2 from Section 3.2 (line 429)
+
+- Definition 3.3 from Section 3.3 (line 433) ..    Note that it is not used in other files
+
+- Definition 3.4 from Section 3.3 (line 444)
 
 ### Section 4
 
+- The multi-threaded instantiation of nominal memory model (line 470)
+
+- Definition 4.1 from Section 4.2 (line 493) ..
+
+- Definition 4.2 from Section 4.2 (line 511) ..
+
+- Definition 4.3 from Section 4.2 (line 524) ..
+
+- Definition 4.4 from Section 4.2 (line 580) ..
+
+- Theorem 4.5 from Section 4.3.1 (line 599) ..
+
+- Definition 4.6 from Section 4.3.1 (line 612) ..
+
+- Theorem 4.7 from Section 4.3.1 (line 629) ..
+
+- Theorem 4.8 from Section 4.3.2 (line 651) ..
+
+- Theorem 4.9 from Section 4.3.2 (line 660) ..
+
+- Theorem 4.10 from Section 4.3.2 (line 669) ..
+
 ### Section 5
 
+- The simulation conventions and semantic invariants mentioned in Section 5.1.1 (line 736) ..
+
+- Lemma 5.1 from Section 5.1.2 (line 759) ..
+
+- For Lemma 5.2 from Section 5.2 (line 786),
+    - ..
+    - ..
+
+- Lemma 5.3 from Section 5.2 (line 792) ..
+
+- Lemma 5.4 from Section 5.2 (line 797) ..
+
+- Lemma 5.5 from Section 5.2 (line 802) ..
+
+- For Lemma 5.6 from Section 5.3 (line 820),
+
 ### Section 6
+
+- Definition 6.1 from Section 6.1 (line 847) ..
+
+- Lemma 6.2 from Section 6.1 (line 855) ..
+
+- Lemma 6.3 from Section 6.1 (line 865) ..
+
+- Lemma 6.4 from Section 6.1 (line 869) ..
+
+- Lemma 6.5 from Section 6.1 (line 875) ..
 
 
 ## 3. Installation
@@ -60,7 +120,7 @@ We have tested the building on Linux with the following shell commands.
     opam init --bare
     
     # Create an "opam switch" dedicated to building the code
-    opam switch create direct-refinement ocaml-base-compiler.4.10.1
+    opam switch create compcertoc ocaml-base-compiler.4.10.1
     
     # Install the necessary packages
     opam repository add coq-released https://coq.inria.fr/opam/released
@@ -74,7 +134,7 @@ We have tested the building on Linux with the following shell commands.
 
 Download the source code form github (If you are using the VM, ignore this).
 ```
-git clone git@github.com:SJTU-PLV/compcertoc-pldi25-artifact.git
+    git clone https://github.com/SJTU-PLV/compcertoc-pldi25-artifact.git
 ```
 
 The Coq code is located in the `CompCertOC` directory.
