@@ -33,8 +33,7 @@ We list the definitions, lemmas and theorems from each section of the paper belo
 
 ### Section 3
 
-- The memory model from Section 3.1 can be found in [common/Memory.v](CompCertOC/common/Memory.v). The nominal interface for the memory model (line 377) 
-is defined as [`Module Type SUP`](CompCertOC/common/Memtype.v) in the Coq file [common/Memtype.v](CompCertOC/common/Memtype.v).
+- The memory model from Section 3.1 can be found in [common/Memory.v](CompCertOC/common/Memory.v). The nominal interface for the memory model (line 377) is defined as [SUP](CompCertOC/common/Memtype.v) in the Coq file [common/Memtype.v](CompCertOC/common/Memtype.v).
 
 - Definition 3.1 from Section 3.2 (line 404)   corresponds to [fsim_properties](CompCertOC/common/Smallstep.v#L597) in [common/Smallstep.v](CompCertOC/common/Smallstep.v). 
 
@@ -48,27 +47,47 @@ defined as `cc_c_asm_injp` in [driver/CA.v](CompCertOC/driver/CA.v).
 
 ### Section 4
 
-- The multi-threaded instantiation of nominal memory model (line 470)
+- For the multi-threaded instantiation of nominal memory model (Section 4.1),
+  the type [block](CompCertOC/common/Values.v#L37) is defined in 
+  [common/Values.v](CompCertOC/common/Values.v). The type [sup](CompCertOC/common)
+  is defined in module [Sup](CompCertOC/common/Memory.v#L116) with newly added operations.
 
-- Definition 4.1 from Section 4.2 (line 493) ..
+- Definition 4.1 from Section 4.2 (line 493) corresponds to the two accessibilities 
+  [injp_acci](CompCertOC/concur/Injp.v#53) and [injp_acce](CompCertOC/concur/Injp.v#72)
+  from the Coq file [concur/Injp.v](CompCertOC/concur/Injp.v)
 
-- Definition 4.2 from Section 4.2 (line 511) ..
+- Definition 4.2 from Section 4.2 (line 511) is defined as 
+  [callconv](CompCertOC/concur/CallconvBig.v#L135) in [concur/CallconvBig.v](CompCertOC/concur/CallconvBig.v).
+  The TKMR `P` and the operations `get` and `set` correspond to the type class 
+  [World](CompCertOC/concur/CallconvBig.v#L70) in the same file. 
 
-- Definition 4.3 from Section 4.2 (line 524) ..
+- Definition 4.3 from Section 4.2 (line 524) is defined as 
+  [fsim_properties](CompCertOC/concur/CallconvBig.v#191) in the same file.
 
-- Definition 4.4 from Section 4.2 (line 580) ..
+- Definition 4.4 from Section 4.2 (line 580) can be found as
+  [cc_c_asm_injp_new](CompCertOC/concur/CAnew.v#81) in [concur/CAnew.v](CompCertOC/concur/CAnew.v).
 
-- Theorem 4.5 from Section 4.3.1 (line 599) ..
+- Theorem 4.5 from Section 4.3.1 (line 599) corresponds to the lemma
+  [composie_simulation](CompCertOC/concur/HCompBig.v#357) in 
+  [concur/HCompBig.v](CompCertOC/concur/HCompBig.v).
 
-- Definition 4.6 from Section 4.3.1 (line 612) ..
+- Definition 4.6 from Section 4.3.1 (line 612) corresponds to the definitions
+  [Concur_sem_c](CompCertOC/concur/CMulti.v#281) and 
+  [Concur_sem_asm](CompCertOC/concur/AsmMulti.v#266) in
+  [concur/CMulti.v](CompCertOC/concur/CMulti.v) and
+  [concur/AsmMulti.v](CompCertOC/concur/AsmMulti.v) for C and assembly, respectively.
 
-- Theorem 4.7 from Section 4.3.1 (line 629) ..
+- Theorem 4.7 from Section 4.3.1 (line 629) is proved as 
+  [Opensim_to_Globalsim](CompCertOC/concur/ThreadLinking.v#2925) in
+  [concur/ThreadLinking.v](CompCertOC/concur/ThreadLinking.v).
 
-- Theorem 4.8 from Section 4.3.2 (line 651) ..
+- Theorem 4.8 from Section 4.3.2 (line 651) corresponds to the lemma
+  [st_fsim_vcomp](CompCertOC/concur/VCompBig.v#L109) in
+  [concur/VCompBig.v](CompCertOC/concur/VCompBig.v).
 
-- Theorem 4.9 from Section 4.3.2 (line 660) ..
-
-- Theorem 4.10 from Section 4.3.2 (line 669) ..
+- Theorem 4.9 from Section 4.3.2 (line 660) is proved as 
+  []
+4.10 from Section 4.3.2 (line 669) ..
 
 ### Section 5
 

@@ -2911,50 +2911,6 @@ Qed.
 
    Theorem Concur_Sim : Closed.forward_simulation ConcurC ConcurA.
    Proof. econstructor. eapply Concur_FSimP. Qed.
-
-   Theorem Concur_BSim :
-     determinate OpenA -> receptive OpenC ->
-     Closed.backward_simulation ConcurC ConcurA.
-   Proof.
-     intros DetA' RecC'.
-     generalize (DetA' (Closed.symbolenv (ConcurA))). intro DetA.
-     generalize (RecC' (Closed.symbolenv (ConcurC))). intro RecC.
-     generalize Concur_FSimP. intro FSIMP.
-     econstructor. instantiate (1:= match_states). instantiate (1:= global_order).
-     inv FSIMP.
-     constructor.
-     - eapply global_index_wf.
-     - intros. exploit fsim_match_initial_states; eauto.
-       intros [i [si [I M]]]. eauto.
-     - intros. exploit fsim_match_initial_states; eauto.
-       intros [i [s2' [I M]]]. inv DetA.
-       inv H0. inv I. rewrite H1 in H0. inv H0.
-       rewrite H2 in H4. inv H4. rewrite H3 in H6. inv H6.
-       exploit sd_initial_determ. 
-       apply H5. apply H8. intro. subst. eauto.
-     - intros. red in H0.
-       exploit H0. eapply star_refl. intros [[r1 A] | B].
-       + exists s1. split. eapply star_refl. exploit fsim_match_final_states; eauto.
-       intro. admit.
-       + admit.     (** Determinate*)                
-     - intros. red in H0.
-       exploit H0. eapply star_refl. intros [[r1 A] | [t [s1' B]]].
-       + left. exploit fsim_match_final_states; eauto.
-       + right. exploit fsim_simulation; eauto.
-         intros. destruct H1 as [i' [s2' [[P|S] M]]].
-         clear H0. inv P. eauto.
-         admit. (*stuttering*)
-     - intros. red in H1.
-       exploit H1. eapply star_refl. intros [[r1 A] | [t' [s1' B]]]; clear H1.
-       + exploit fsim_match_final_states; eauto. intro FA.
-         exfalso. admit. (*determ*)
-       + exploit fsim_simulation; eauto.
-         intros [i' [s2'' [[P|S]M]]].
-         -- (** We have to change [match_state] *)
-           admit.
-         -- admit.
-     - intros. f_equal. simpl. unfold initial_se, CMulti.initial_se. congruence.
-   Abort.
        
   End FSIM.
 
