@@ -36,14 +36,15 @@ We list the definitions, lemmas and theorems from each section of the paper belo
 - The memory model from Section 3.1 can be found in [common/Memory.v](CompCertOC/common/Memory.v). The nominal interface for the memory model (line 377) 
 is defined as [`Module Type SUP`](CompCertOC/common/Memtype.v) in the Coq file [common/Memtype.v](CompCertOC/common/Memtype.v).
 
-- Definition 3.1 from Section 3.2 (line 404)   corresponds to [fsim_properties](CompCertOC/common/Smallstep.v#L597) in the Coq file
-  [common/Smallstep.v](CompCertOC/common/Smallstep.v). 
-  
-- Definition 3.2 from Section 3.2 (line 429)
+- Definition 3.1 from Section 3.2 (line 404)   corresponds to [fsim_properties](CompCertOC/common/Smallstep.v#L597) in [common/Smallstep.v](CompCertOC/common/Smallstep.v). 
 
-- Definition 3.3 from Section 3.3 (line 433) ..    Note that it is not used in other files
+>[TODO: remove these backgrounds to sec5?]
+- Definition 3.2 from Section 3.2 (line 429) is defined as `cklr` in [cklr/CKLR.v](CompCertOC/cklr/CKLR.v).
 
-- Definition 3.4 from Section 3.3 (line 444)
+- Definition 3.3 from Section 3.3 (line 433) is defined as `injp` in [cklr/InjectFootprint.v](CompCertOC/cklr/InjectFootprint.v). Note that it is not actually used is this work.
+
+- Definition 3.4 from Section 3.3 (line 444) is
+defined as `cc_c_asm_injp` in [driver/CA.v](CompCertOC/driver/CA.v).
 
 ### Section 4
 
