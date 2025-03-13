@@ -211,9 +211,8 @@ compiler in parallel.
 
 
 We have tested running `make` in the VM with 4GB virtual memory and 4 CPU cores, which in turn runs on a host machine with Intel i9-12900H and 64 GB memory. The whole compilation takes 1 hour.
-> [TODO]
 When using `make -4j` command for parallel compilation,
-it takes about ?? minutes. -->
+it takes about 20 minutes. -->
 
 
 For CompCert unit tests, enter the `test` directory and run
