@@ -5,15 +5,21 @@
 This artifact contains CompCertOC, an extension 
 of CompCertO that provides verified compositional
 compilation of multi-threaded programs with shared 
-stacks. The extended CompCertO is based con CompCert
+stacks. The extended CompCertO is based on CompCert
 version 3.13.
 
 This artifact accompanies the following paper:
 
 > [*CompCertOC: Verified Compositional Compilation of Multi-Threaded Programs with Shared Stacks*](pldi25-paper146-submission.pdf). Ling Zhang, Yuting Wang, Yalun Liang and Zhong Shao
 
-[TODO]
 
+We first list the corresponding formal definitions and theorems
+of the claims we made in the submission in Section 2. The instructions
+for building and evaluationg can be found in Section 3 and Section 4.
+In section 5, we demonstrate the newly added definitions and 
+theorems for backward simulations which are not included in the submission.
+
+>[TODO: check hyperlink]
 **Notice**: if you are on [the main page](https://github.com/SJTU-PLV/direct-refinement-popl24-artifact)
 of this github repository, some
 hyperlinks may lead to "Not Found" errors. Please navigate the README.md file 
@@ -37,7 +43,6 @@ We list the definitions, lemmas and theorems from each section of the paper belo
 
 - Definition 3.1 from Section 3.2 (line 404)   corresponds to [fsim_properties](CompCertOC/common/Smallstep.v#L597) in [common/Smallstep.v](CompCertOC/common/Smallstep.v). 
 
->[TODO: remove these backgrounds to sec5?]
 - Definition 3.2 from Section 3.2 (line 429) is defined as `cklr` in [cklr/CKLR.v](CompCertOC/cklr/CKLR.v).
 
 - Definition 3.3 from Section 3.3 (line 433) is defined as `injp` in [cklr/InjectFootprint.v](CompCertOC/cklr/InjectFootprint.v). Note that it is not actually used is this work.
@@ -133,7 +138,8 @@ as [transf_program_correct](CompCertOC/concur/StackingproofC.v#L3043) in [concur
   [cctrans_wt_c_compose](CompCertOC/concur/Composition.v#L459) in the same file.
 
 - Lemma 5.6 from Section 5.3 (line 820) corresponds to the theorem
-  [TODO].
+  [transf_clight_program_correct](CompCertOC/driver/Compiler.v#L549) in
+  the Coq file [driver/Compiler.v](CompCertOC/driver/Compiler.v).
   The refinement sequence (line825-833) is proved as
   [cc_collapse](CompCertOC/concur/Composition.v) in the Coq file
   [concur/Composition.v](CompCertOC/concur/Composition.v).
@@ -278,3 +284,39 @@ which should show no admit.
 
 The following are the instructions for reproducing the lines of code
 mentioned in Section 6.2.
+
+## 5 Backward simulation 
+
+Following the advice of the reviewers, we implement the 
+threaded backward simulation and the thread linking theorem
+in the form of backward simulation.
+
+- The threaded backward simulation is defined as 
+[bsim_properties](CompCertOC/concur/CallconvBig.v#733)
+in [concur/CallconvBig.v](CompCertOC/concur/CallconvBig.v).
+
+- The theorem for flipping threaded forward simulation into backward
+simulation is proved as [forward_to_backward_simulation](CompCertOC/concur/CallconvBig.v#L1099) in the same file.
+
+- The compiler correctness theorem 
+ [transf_clight_program_correct](CompCertOC/driver/Compiler.v#L549) in
+ the Coq file [driver/Compiler.v](CompCertOC/driver/Compiler.v) 
+ states both forward and backward simulations.
+ 
+- We are able to prove the correctness of thread linking in the form
+  of backward simulation as [BSIM](CompCertOC/concur/ThreadLinkingBack.v#L3321) in [concur/ThreadLinkingBack.v](CompCectOC/concur/ThreadLinkingBack.v). Several extra requirements of the *source* semantics are needed for this linking. The lemmas stating that any Clight programs can 
+  satisfy these requirements can be found at the end of the same file.
+  
+- Using the results above, we updated the correctness of our
+  running example in the forms of 
+  threaded backward simulation ([module_linking_back]((CompCertOC/cdemo/Demoproof.v#L254))
+  and closed backward simulation between multi-threaded semantics ([thread_linking_back](CompCertOC/cdemo/Demoproof.v#L262)) in the Coq file 
+  [cdemo/Demoproof.v](CompCertOC/cdemo/Demoproof.v).
+  Note that the closed backward simulation here
+  is the same definition used in vanilla CompCert for closed programs.
+  
+  
+  
+  
+  
+  
