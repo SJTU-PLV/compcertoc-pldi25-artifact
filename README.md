@@ -6,7 +6,10 @@ This artifact contains CompCertOC, an extension
 of CompCertO that provides verified compositional
 compilation of multi-threaded programs with shared 
 stacks. The extended CompCertO is based on CompCert
-version 3.13.
+version 3.13. Our implementation is located in the
+[`CompCertOC`](CompCertOC) directory. For comparsion,
+we also upload a copy of CompCertO in the directory
+[`CompCertO`](CompCertO).
 
 This artifact accompanies the following paper:
 
@@ -161,6 +164,10 @@ in the Coq file [x86/AsmLinking.v](CompCertOC/x86/AsmLinking.v).
 - Lemma 6.5 from Section 6.1 (line 875) is proved
 as [thread_linking_correct](CompCertOC/cdemo/Demoproof.v#L80) in the Coq file [cdemo/Demoproof.v](CompCertOC/cdemo/Demoproof.v).
 
+- We claim that we have added 15.8k lines of code (LOC) on top of CompCertO in Section 6.2 (line 879).
+  In this artifact, we have revised the code for better readability, and added more contents according to
+  the reviews. Therefore, the total amount of Coq is about [TODO]k LOC. The details are discussed
+  in the section "Evaluation" below.
 
 ## 3. Installation
 
@@ -236,10 +243,11 @@ You can run `make clean` to clean up the compiled code.
 ### 3.3. Navagating the proofs
 
 After that, you can navigate the source code by using
-[emacs](https://www.gnu.org/software/emacs/) with [proof-general](https://proofgeneral.github.io/doc/master/userman/Introducing-Proof-General/)
+[emacs](https://www.gnu.org/software/emacs/) with
+[proof-general](https://proofgeneral.github.io/doc/master/userman/Introducing-Proof-General/)
 installed.
 
-For example, running
+For example, and running (in the directory `CompCertOC`)
 
 ```
 emacs concur/CallconvBig.v
@@ -247,7 +255,7 @@ emacs concur/CallconvBig.v
 
 opens the emacs window in 
 proof-general
-mode for browsing the file `cklr/InjectFootprint.v`. 
+mode for browsing the file `concur/CallconvBig.v`. 
 
 You can also compile the source code into html files for better
 readability. Simply run the following command (needs
@@ -282,10 +290,115 @@ which should show no admit.
 
 ### 4.2. Proof effort
 
-The following are the instructions for reproducing the lines of code
-mentioned in Section 6.2.
+The following are the instructions for reproducing the lines of code (LOC)
+of each part of our implementation according to Section 6.2 (line 879-899).
+As mentioned in the overview, the concrete numbers are slightly changed after submission.
 
-## 5 Backward simulation 
+#### Multi-stack memory model
+
+run the following command in directories `CompCertO` and `CompCertOC`, respectively:
+
+```
+coqwc common/Memory.v common/Values.v
+```
+
+The last row of the results should be
+```
+#CompCertO:
+     3635     4538      478 total#8173
+#CompCertOC:
+     4013     5181      530 total#9194
+```
+Therefore, we added total 1.0k(1021) lines of code to implement memory model.
+
+#### The framework of threaded simulation
+
+Run the following command in directory `CompCertOC`:
+```
+coqwc concur/CallconvBig.v concur/CallConvAlgebra.v concur/Injp.v concur/Ext.v concur/HCompBig.v concur/VCompBig.v concur/InvariantC.v
+```
+
+The last row of result should be 
+```
+     1278     1302      271 total#2580
+```
+
+We used 2.6k(2580) lines of code for the threaded simulation framework. 
+
+#### Verification of compilation passes
+
+For comparison, firstly run the following command in directory `CompCertO`:
+```
+coqwc cfrontend/SimplLocalsproof.v cfrontend/Cminorgenproof.v backend/RTLgenproof.v backend/Selectionproof.v backend/Tailcallproof.v backend/Inliningproof.v backend/Constpropproof.v backend/CSEproof.v backend/Deadcodeproof.v backend/Allocproof.v backend/Tunnelingproof.v backend/Stackingproof.v x86/Asmgenproof.v
+
+```
+The last row of result should be
+```
+     6163    13146     1497 total#19309
+```
+
+Then, run the following command in `CompCertOC`:
+```
+coqwc concur/SimplLocalsproofC.v concur/CminorgenproofC.v concur/RTLgenproofC.v concur/SelectionproofC.v concur/TailcallproofC.v concur/InliningproofC.v concur/ConstpropproofC.v concur/CSEproofC.v concur/DeadcodeproofC.v concur/AllocproofC.v concur/TunnelingproofC.v concur/StackingproofC.v concur/AsmgenproofC.v
+```
+
+The last row of result should be
+```
+     6770    15334     1512 total#22104
+```
+
+Therefore, we added 2.8k(2795) lines of code (LOC) on the top of 19.3k(19309) LOC in CompCertO. Note that 
+pass `Unusedglob` is not included in the current artifact.
+
+#### Refinement of threaded simulation conventions
+
+Run the following command in `CompCertOC`:
+
+```
+coqwc concur/InjpAccoComp.v concur/InjpExtAccoComp.v concur/RTLselfsim.v concur/CAnew.v concur/CallConvLibs.v concur/StackingRefine.v concur/Composition.v
+```
+The last row of result should be
+```
+     1581     6015     1073 total#7596
+```
+
+We added 7.6k(7596) lines of code to verify the refinements of threaded simulation conventions.
+
+#### Multi-threaded semantics and thread linking
+
+Run the following command in `CompCertOC`:
+```
+coqwc concur/MultiLibs.v concur/CMulti.v concur/AsmMulti.v concur/ThreadLinking.v concur/ThreadLinkingBack.v
+```
+The last row of result should be:
+```
+     1181     5115      389 total#6296
+```
+
+Totally 6.3k(6296) lines of code are needed to define multi-threaded semantics and prove thread linking.
+Note that about 3.2k LOC from `ThreadLinkingBack.v` is for backward simulation which is newly added and
+not counted in the submission.
+
+
+#### Running example
+
+For the running example, simply run the following command in `CompCertOC`:
+```
+coqwc cdemo/*.v
+```
+
+The last row of result should be:
+
+```
+      544      556      142 total#1100
+```
+
+We used 1.1k lines of code to verify the running example.
+
+In summary, our Coq development contains (1.0+2.6+2.8+7.6+6.3+1.1 =) 21.4 lines of code on top of
+CompCertO.
+
+## 5. Newly added contents: backward simulation 
 
 Following the advice of the reviewers, we implement the 
 threaded backward simulation and the thread linking theorem
