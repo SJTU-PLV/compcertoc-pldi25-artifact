@@ -86,38 +86,74 @@ defined as `cc_c_asm_injp` in [driver/CA.v](CompCertOC/driver/CA.v).
   [concur/VCompBig.v](CompCertOC/concur/VCompBig.v).
 
 - Theorem 4.9 from Section 4.3.2 (line 660) is proved as 
-  []
-4.10 from Section 4.3.2 (line 669) ..
+  [open_fsim_cctrans'](CompCertOC/concur/CallConvAlgebra.v#L79)
+  in [concur/CallConvAlgebra.v](CompCertOC/concur/CallConvAlgebra.v).
+  The refinement between simulation conventions $\sqsubseteq$ correspond
+  s to [cctrans'](CompCertOC/concur/CallConvAlgebra.v#L71) in the same file.
+
+- As mentioned in line 666, Theorem 4.10 from Section 4.3.2 (line 669) corresponds to the critical part of [cctrans_injp_comp](CompCertOC/concur/CallConvLibs.v#L2157) in the Coq file [concur/CallConvLibs.v](CompCertOC/concur/CallConvLibs.v).
+
 
 ### Section 5
 
-- The simulation conventions and semantic invariants mentioned in Section 5.1.1 (line 736) ..
-
-- Lemma 5.1 from Section 5.1.2 (line 759) ..
+- Lemma 5.1 from Section 5.1.2 (line 759) is proved
+as [transf_program_correct](CompCertOC/concur/StackingproofC.v#L3043) in [concur/StackingproofC.v](CompCertOC/concur/StackingproofC.v).
 
 - For Lemma 5.2 from Section 5.2 (line 786),
-    - ..
-    - ..
+    - property (1) is [cctrans_injp_comp](CompCertOC/concur/CallConvLibs.v#L2157) in the Coq file [concur/CallConvLibs.v](CompCertOC/concur/CallConvLibs.v).
+    - property (2) is [cctrans_ext_comp](CompCertOC/concur/CallConvLibs.v#L2249) in the same file.
+    - property (3) is [cctrans_injp_ext](CompCertOC/concur/CallConvLibs.v#L2541) in the same file.
+    - property (4) is [cctrans_ro_injp_compose](CompCertOC/concur/Composition.v#L295) in the Coq file [concur/Composition.v](CompCertOC/concur/Composition.v).
 
-- Lemma 5.3 from Section 5.2 (line 792) ..
+- For Lemma 5.3 from Section 5.2 (line 792),
+  - property (1) corresponds to the lemmas 
+    [CL_trans_ext](CompCertOC/concur/CallConvLibs.v#L398),
+    [CL_trans_ext1](CompCertOC/concur/CallConvLibs.v#L482), 
+    [CL_trans_injp](CompCertOC/concur/CallConvLibs.v#L563) and 
+    [CL_trans_injp1](CompCertOC/concur/CallConvLibs.v#L653) in the Coq file [concur/CallConvLibs.v](CompCertOC/concur/CallConvLibs.v).
+  - property (2) corresponds to the lemmas
+    [MA_trans_injp1](CompCertOC/concur/CallConvLibs.v#L816),
+    [MA_trans_injp2](CompCertOC/concur/CallConvLibs.v#L904),
+    [MA_trans_ext1](CompCertOC/concur/CallConvLibs.v#L1003) and
+    [MA_trans_ext2](CompCertOC/concur/CallConvLibs.v#L1096) in the same file.
 
-- Lemma 5.4 from Section 5.2 (line 797) ..
+- For Lemma 5.4 from Section 5.2 (line 797), 
+  - property (1) is proved as [cctrans_injp_ext_ccstacking](CompCertOC/concur/StackingRefine.v#L121) in the Coq file
+  [concur/StackingRefine.v](CompCertOC/concur/StackingRefine.v).
+  - property (2) is proved as [cctrans_CAinjp](CompCertOc/concur/Composition.v#L567) in the Coq file [concur/Composition.v](CompCertOC/concur/Composition.v).
 
-- Lemma 5.5 from Section 5.2 (line 802) ..
+- For Lemma 5.5 from Section 5.2 (line 802),
+  - property (1) corresponds to the lemmas
+  [cctrans_ro_wt_c](CompCertOC/concur/Composition.v#L418) and 
+  [cctrans_wt_c_ro](CompCertOC/concur/Composition.v#L423) in the Coq file [concur/Composition.v](CompCertOC/concur/Composition.v).
+  - property (2) corresponds to the lemmas
+  [move_wt_injp](CompCertOC/concur/Composition.v#L60) and
+  [move_wt_ext](CompCertOC/concur/Composition.v#L119) in the same file.
+  - property (3) corresponds to 
+  [cctrans_wt_c_compose](CompCertOC/concur/Composition.v#L459) in the same file.
 
-- For Lemma 5.6 from Section 5.3 (line 820),
+- Lemma 5.6 from Section 5.3 (line 820) corresponds to the theorem
+  [TODO].
+  The refinement sequence (line825-833) is proved as
+  [cc_collapse](CompCertOC/concur/Composition.v) in the Coq file
+  [concur/Composition.v](CompCertOC/concur/Composition.v).
+
 
 ### Section 6
 
-- Definition 6.1 from Section 6.1 (line 847) ..
+- Definition 6.1 from Section 6.1 (line 847) is defined as [L_E](CompCertOC/cdemo/EncryptSpec.v#L45)
+in the Coq file [cdemo/EncryptSpec.v](CompCertOC/cdemo/EncryptSpec.v).
 
-- Lemma 6.2 from Section 6.1 (line 855) ..
+- Lemma 6.2 from Section 6.1 (line 855) is proved as
+[correctness_L_E](CompCertOC/cdemo/Encryptproof.v#L586) in the Coq file [cdemo/Encryptproof.v](CompCertOC/cdemo/Encryptproof.v).
 
-- Lemma 6.3 from Section 6.1 (line 865) ..
+- Lemma 6.3 from Section 6.1 (line 865) corresponds to [module_linking_correct](CompCertOC/cdemo/Demoproof.v#L67) in the Coq file [cdemo/Demoproof.v](CompCertOC/cdemo/Demoproof.v).
 
-- Lemma 6.4 from Section 6.1 (line 869) ..
+- Lemma 6.4 from Section 6.1 (line 869) is proved as [asm_linking](CompCertOC/x86/AsmLinking.v#L371)
+in the Coq file [x86/AsmLinking.v](CompCertOC/x86/AsmLinking.v).
 
-- Lemma 6.5 from Section 6.1 (line 875) ..
+- Lemma 6.5 from Section 6.1 (line 875) is proved
+as [thread_linking_correct](CompCertOC/cdemo/Demoproof.v#L80) in the Coq file [cdemo/Demoproof.v](CompCertOC/cdemo/Demoproof.v).
 
 
 ## 3. Installation
@@ -162,21 +198,22 @@ First, you need to build a library named [Coqrel](https://github.com/CertiKOS/co
 ```
     (cd coqrel && ./configure && make)
 ```
-Then, you can build the CompCertOC as follows:
+Then, you can build and install the CompCertOC as follows:
 ```
     ./configure x86_64-linux
     make
+    sudo make install
 ```
 
 You are all set if the compilation finishes successfully.  You may
 also speed up the process by using `-jN` argument to run the Coq
 compiler in parallel.
 
+
+We have tested running `make` in the VM with 4GB virtual memory and 4 CPU cores, which in turn runs on a host machine with Intel i9-12900H and 64 GB memory. The whole compilation takes 1 hour.
 > [TODO]
-<!-- We have tested running `make -j4` in the VM with 4GB virtual memory and 4 CPU cores, which in turn runs -->
-<!-- on a host machine with Intel i9-12900H and 64 GB memory. The whole compilation takes about 8 -->
-<!-- minutes. When using `make` command without any parallel compilation, -->
-<!-- it takes about 20 minutes. -->
+When using `make -4j` command for parallel compilation,
+it takes about ?? minutes. -->
 
 
 For CompCert unit tests, enter the `test` directory and run
@@ -200,7 +237,7 @@ installed.
 For example, running
 
 ```
-emacs cklr/InjectFootprint.v
+emacs concur/CallconvBig.v
 ```
 
 opens the emacs window in 
@@ -229,10 +266,16 @@ make
 sudo make install
 ```
 
-## 4 Evaluation
+## 4. Evaluation
 
-### 4.1 Soundness 
+### 4.1. Soundness 
+To check that there is no admit in the artifact, enter `DirectRefinement` and run
+```
+find . -name "*.v" | xargs grep "Admitted"
+```
+which should show no admit.
 
+### 4.2. Proof effort
 
-### 4.2 Proof effort
-
+The following are the instructions for reproducing the lines of code
+mentioned in Section 6.2.
