@@ -3318,22 +3318,6 @@ Section ConcurSim.
        
   End BSIM.
 
-  Definition final_noundef (lts : semantics li_c li_c) : Prop :=
-   forall s v m se,
-        Smallstep.final_state (lts se) s (cr v m) ->
-        v <> Vundef.
-    
-  Definition after_external_receptive (lts : semantics li_c li_c) : Prop :=
-    forall s q r se,
-      Smallstep.at_external (lts se) s q ->
-      exists s', Smallstep.after_external (lts se) s r s'.
-
-  Definition initial_state_receptive (lts : semantics li_c li_c) : Prop :=
-    forall s vf sg args se m m',
-      Smallstep.initial_state (lts se) (cq vf sg args m) s ->
-      Mem.sup_include (Mem.support m) (Mem.support m') ->
-      exists s', Smallstep.initial_state (lts se) (cq vf sg args m') s'.
-
   Lemma BSIM : GS.backward_simulation cc_compcert OpenC OpenA ->
                determinate_big OpenC ->
                after_external_receptive OpenC ->
@@ -3381,4 +3365,8 @@ End ConcurSim.
     eexists. econstructor; eauto.
   Qed.
   
-
+  Lemma Clight_valid_query_receptive :
+     forall (p: Clight.program), valid_query_receptive (Clight.semantics1 p).
+  Proof.
+    intros p. red. reflexivity.
+  Qed.

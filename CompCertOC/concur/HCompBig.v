@@ -8,8 +8,6 @@ Require Import Smallstep CallconvBig.
 Require Import Linking.
 Require Import Classical.
 
-
-
 Ltac subst_dep :=
   subst;
   lazymatch goal with
@@ -115,6 +113,7 @@ Section LINK.
 
   (** * Receptiveness and determinacy *)
 
+      
   Lemma semantics_receptive:
     (forall i, receptive (L i)) ->
     receptive semantics.
@@ -134,6 +133,33 @@ Section LINK.
       Smallstep.valid_query (L i se) q = true ->
       Smallstep.valid_query (L j se) q = true ->
       i = j.
+    
+  Lemma semantics_determinate_big :
+    (forall i, determinate_big (L i)) ->
+    determinate_big semantics.
+  Proof.
+     intros HL se. unfold determinate_big in HL.
+    constructor; cbn.
+    - destruct 1; inversion 1; subst. assert (i0 = i) by eauto; subst.
+      edestruct (sd_big_initial_determ (HL i se) q s s0); eauto.
+    - destruct 1. inversion 1; subst_dep.
+      + eapply sd_big_at_external_nostep; eauto.
+      + edestruct (sd_big_at_external_determ (HL i se) s q q0); eauto.
+        specialize (H0 j). congruence.
+      + eapply sd_big_final_noext; eauto.
+    - destruct 1. inversion 1; subst_dep.
+      eapply sd_big_at_external_determ; eauto.
+    - destruct 1. inversion 1; subst_dep.
+      edestruct (sd_big_after_external_determ (HL i se) s r s' s'0); eauto.
+    - destruct 1. inversion 1; subst_dep.
+      + eapply sd_big_final_nostep; eauto.
+      + eapply sd_big_final_noext; eauto.
+    - destruct 1. inversion 1; subst_dep.
+      eapply sd_big_final_noext; eauto.
+    - destruct 1. inversion 1; subst_dep.
+      eapply sd_big_final_determ; eauto.
+  Qed.
+
 
   Lemma semantics_determinate:
     (forall i, determinate (L i)) ->
