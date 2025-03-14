@@ -23,18 +23,16 @@ In Section 5, we demonstrate the newly added definitions and
 theorems for backward simulations which were not included in the submission but requested by the reviewers.
 
 >[TODO: check hyperlink]
-**Notice**: if you are on [the main page](https://github.com/SJTU-PLV/direct-refinement-popl24-artifact)
+**Notice**: if you are on [the main page](https://github.com/SJTU-PLV/compcertoc-pldi25-artifact)
 of this github repository, some
 hyperlinks may lead to "Not Found" errors. Please navigate the README.md file 
-[directly](https://github.com/SJTU-PLV/direct-refinement-popl24-artifact/blob/main/README.md)
+[directly](https://github.com/SJTU-PLV/compcertoc-pldi25-artifact/blob/main/README.md)
 to ensure that the hyperlinks work properly.
 
 
 ## 2. List of Claims
 
 We list the definitions, lemmas and theorems from each section of the paper below along with the references to their corresponding Coq formalization in the artifact.
-<!-- A more organized and complete explanation -->
-<!-- of the Coq formalization is located in the section "Structure of the Formal Proofs" below. -->
 
 ### Section 2
 
@@ -42,23 +40,23 @@ We list the definitions, lemmas and theorems from each section of the paper belo
 
 ### Section 3
 
-- The memory model from Section 3.1 can be found in [common/Memory.v](CompCertOC/common/Memory.v). The nominal interface for the memory model (line 377) is defined as [SUP](CompCertOC/common/Memtype.v) in the Coq file [common/Memtype.v](CompCertOC/common/Memtype.v).
+- The memory model from Section 3.1 can be found in [common/Memory.v](CompCertOC/common/Memory.v). The nominal interface for the memory model (line 377) is defined as [SUP](CompCertOC/common/Memtype.v#L87) in the Coq file [common/Memtype.v](CompCertOC/common/Memtype.v).
 
 - Definition 3.1 from Section 3.2 (line 404)   corresponds to [fsim_properties](CompCertOC/common/Smallstep.v#L597) in [common/Smallstep.v](CompCertOC/common/Smallstep.v). 
 
-- Definition 3.2 from Section 3.2 (line 429) is defined as `cklr` in [cklr/CKLR.v](CompCertOC/cklr/CKLR.v).
+- Definition 3.2 from Section 3.2 (line 429) is defined as [cklr](CompCertOC/cklr/CKLR.v#L43) in [cklr/CKLR.v](CompCertOC/cklr/CKLR.v).
 
-- Definition 3.3 from Section 3.3 (line 433) is defined as `injp` in [cklr/InjectFootprint.v](CompCertOC/cklr/InjectFootprint.v). 
+- Definition 3.3 from Section 3.3 (line 433) is defined as [injp](CompCertOC/cklr/InjectFootprint.v#286) in [cklr/InjectFootprint.v](CompCertOC/cklr/InjectFootprint.v). 
 
 - Definition 3.4 from Section 3.3 (line 444) is
-defined as `cc_c_asm_injp` in [driver/CA.v](CompCertOC/driver/CA.v).
+defined as [cc_c_asm_injp](CompCertOC/driver/CA.v#L184) in [driver/CA.v](CompCertOC/driver/CA.v).
 
 ### Section 4
 
 - For the multi-threaded instantiation of nominal memory model (Section 4.1),
   the type [block](CompCertOC/common/Values.v#L37) is defined in 
-  [common/Values.v](CompCertOC/common/Values.v). The type [sup](CompCertOC/common)
-  is defined in module [Sup](CompCertOC/common/Memory.v#L116) with newly added operations.
+  [common/Values.v](CompCertOC/common/Values.v). The type `sup`
+  is defined in module [Sup](CompCertOC/common/Memory.v#L116) with newly added operations in [common/Memory.v](CompCertOC/common/Memory.v).
 
 - Definition 4.1 from Section 4.2 (line 493) corresponds to the two accessibilities 
   [injp_acci](CompCertOC/concur/Injp.v#53) and [injp_acce](CompCertOC/concur/Injp.v#72)
@@ -166,7 +164,7 @@ as [thread_linking_correct](CompCertOC/cdemo/Demoproof.v#L80) in the Coq file [c
 
 - We claim that we have added 15.8k lines of code (LOC) on top of CompCertO in Section 6.2 (line 879).
   In this artifact, we have revised the code for better readability, and added more contents according to
-  the reviews. Therefore, the total amount of Coq is about [TODO]k LOC. The details are discussed
+  the reviews. Therefore, the total amount of Coq is about 21.4k LOC. The details are discussed
   in the section "Evaluation" below.
 
 ## 3. Installation
