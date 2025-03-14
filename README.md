@@ -58,7 +58,7 @@ defined as [cc_c_asm_injp](CompCertOC/driver/CA.v#L184) in [driver/CA.v](CompCer
   is defined in module [Sup](CompCertOC/common/Memory.v#L116) with newly added operations in [common/Memory.v](CompCertOC/common/Memory.v).
 
 - Definition 4.1 from Section 4.2 (line 493) corresponds to the two accessibilities 
-  [injp_acci](CompCertOC/concur/Injp.v#L53) and [injp_acce](CompCertOC/concur/Injp.v#72)
+  [injp_acci](CompCertOC/concur/Injp.v#L53) and [injp_acce](CompCertOC/concur/Injp.v#L72)
   from the Coq file [concur/Injp.v](CompCertOC/concur/Injp.v)
 
 - Definition 4.2 from Section 4.2 (line 511) is defined as 
@@ -73,17 +73,17 @@ defined as [cc_c_asm_injp](CompCertOC/driver/CA.v#L184) in [driver/CA.v](CompCer
   [cc_c_asm_injp_new](CompCertOC/concur/CAnew.v#L81) in [concur/CAnew.v](CompCertOC/concur/CAnew.v).
 
 - Theorem 4.5 from Section 4.3.1 (line 599) corresponds to the lemma
-  [compose_simulation](CompCertOC/concur/HCompBig.v#L357) in 
+  [compose_simulation](CompCertOC/concur/HCompBig.v#L383) in 
   [concur/HCompBig.v](CompCertOC/concur/HCompBig.v).
 
 - Definition 4.6 from Section 4.3.1 (line 612) corresponds to the definitions
-  [Concur_sem_c](CompCertOC/concur/CMulti.v#L281) and 
+  [Concur_sem_c](CompCertOC/concur/CMulti.v#L283) and 
   [Concur_sem_asm](CompCertOC/concur/AsmMulti.v#L266) in
   [concur/CMulti.v](CompCertOC/concur/CMulti.v) and
   [concur/AsmMulti.v](CompCertOC/concur/AsmMulti.v) for C and assembly, respectively.
 
 - Theorem 4.7 from Section 4.3.1 (line 629) is proved as 
-  [Opensim_to_Globalsim](CompCertOC/concur/ThreadLinking.v#L2925) in
+  [Opensim_to_Globalsim](CompCertOC/concur/ThreadLinking.v#L2969) in
   [concur/ThreadLinking.v](CompCertOC/concur/ThreadLinking.v).
 
 - Theorem 4.8 from Section 4.3.2 (line 651) corresponds to the lemma
@@ -125,7 +125,7 @@ as [transf_program_correct](CompCertOC/concur/StackingproofC.v#L3043) in [concur
 - For Lemma 5.4 from Section 5.2 (line 797), 
   - property (1) is proved as [cctrans_injp_ext_ccstacking](CompCertOC/concur/StackingRefine.v#L121) in the Coq file
   [concur/StackingRefine.v](CompCertOC/concur/StackingRefine.v).
-  - property (2) is proved as [cctrans_CAinjp](CompCertOc/concur/Composition.v#L567) in the Coq file [concur/Composition.v](CompCertOC/concur/Composition.v).
+  - property (2) is proved as [cctrans_CAinjp](CompCertOC/concur/Composition.v#L567) in the Coq file [concur/Composition.v](CompCertOC/concur/Composition.v).
 
 - For Lemma 5.5 from Section 5.2 (line 802),
   - property (1) corresponds to the lemmas
@@ -141,7 +141,7 @@ as [transf_program_correct](CompCertOC/concur/StackingproofC.v#L3043) in [concur
   [transf_clight_program_correct](CompCertOC/driver/Compiler.v#L549) in
   the Coq file [driver/Compiler.v](CompCertOC/driver/Compiler.v).
   The refinement sequence (line825-833) is proved as
-  [cc_collapse](CompCertOC/concur/Composition.v) in the Coq file
+  [cc_collapse](CompCertOC/concur/Composition.v#L698) in the Coq file
   [concur/Composition.v](CompCertOC/concur/Composition.v).
 
 
@@ -406,7 +406,7 @@ backward simulation and their thread linking theorem is listed as
 follows.
 
 - The threaded backward simulation is defined as 
-[bsim_properties](CompCertOC/concur/CallconvBig.v#733)
+[bsim_properties](CompCertOC/concur/CallconvBig.v#L733)
 in [concur/CallconvBig.v](CompCertOC/concur/CallconvBig.v).
 
 - The theorem for flipping threaded forward simulation into backward
@@ -422,7 +422,7 @@ in the same file.
 - We are able to prove the correctness of thread linking in the form
   of backward simulation as
   [BSIM](CompCertOC/concur/ThreadLinkingBack.v#L3321) in
-  [CompCertOC/concur/ThreadLinkingBack.v](CompCectOC/concur/ThreadLinkingBack.v).
+  [concur/ThreadLinkingBack.v](CompCertOC/concur/ThreadLinkingBack.v).
   To apply this theorem, the soundness properties `determinate_big
   OpenC`, `after_external_receptive OpenC` and
   `initial_state_receptive OpenC` are needed for the source semantics,
@@ -431,7 +431,7 @@ in the same file.
   
 - With the above results, we updated the correctness property of our
   running example in the form of 
-  threaded backward simulation ([module_linking_back]((CompCertOC/cdemo/Demoproof.v#L254)))
+  threaded backward simulation ([module_linking_back](CompCertOC/cdemo/Demoproof.v#L254))
   and closed backward simulation between multi-threaded semantics ([thread_linking_back](CompCertOC/cdemo/Demoproof.v#L262)) in the Coq file 
   [cdemo/Demoproof.v](CompCertOC/cdemo/Demoproof.v).
   Note that the closed backward simulation 
