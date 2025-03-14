@@ -7,7 +7,7 @@ of CompCertO that provides verified compositional
 compilation of multi-threaded programs with shared 
 stacks. Both CompCertOC and CompCertO are based on CompCert
 version 3.13. Our implementation is located in the
-[`CompCertOC`](CompCertOC) directory. For comparsion,
+[`CompCertOC`](CompCertOC) directory. For comparison,
 we also provide a copy of CompCertO in the directory
 [`CompCertO`](CompCertO).
 
@@ -18,7 +18,7 @@ This artifact accompanies the following paper:
 
 We first list the corresponding formal definitions and theorems
 of the claims we made in the submission in Section 2. The instructions
-for building and evaluationg can be found in Section 3 and Section 4.
+for building and evaluating can be found in Section 3 and Section 4.
 In Section 5, we demonstrate the newly added definitions and 
 theorems for backward simulations which were not included in the submission but requested by the reviewers.
 
@@ -76,7 +76,7 @@ defined as `cc_c_asm_injp` in [driver/CA.v](CompCertOC/driver/CA.v).
   [cc_c_asm_injp_new](CompCertOC/concur/CAnew.v#81) in [concur/CAnew.v](CompCertOC/concur/CAnew.v).
 
 - Theorem 4.5 from Section 4.3.1 (line 599) corresponds to the lemma
-  [composie_simulation](CompCertOC/concur/HCompBig.v#357) in 
+  [compose_simulation](CompCertOC/concur/HCompBig.v#357) in 
   [concur/HCompBig.v](CompCertOC/concur/HCompBig.v).
 
 - Definition 4.6 from Section 4.3.1 (line 612) corresponds to the definitions
@@ -240,7 +240,7 @@ implemented (based on open semantics) yet.
 
 You can run `make clean` to clean up the compiled code.
 
-### 3.3. Navagating the proofs
+### 3.3. Navigating the proofs
 
 After that, you can navigate the source code by using
 [emacs](https://www.gnu.org/software/emacs/) with
@@ -395,7 +395,7 @@ The last row of result should be:
 
 We used 1.1k lines of code to verify the running example.
 
-In summary, our Coq development contains (1.0+2.6+2.8+7.6+6.3+1.1 =) 21.4 lines of code on top of
+In summary, our Coq development contains (1.0+2.6+2.8+7.6+6.3+1.1 =) 21.4k lines of code on top of
 CompCertO.
 
 ## 5. Newly added contents: backward simulation 
