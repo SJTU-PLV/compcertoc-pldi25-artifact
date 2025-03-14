@@ -22,7 +22,6 @@ for building and evaluating can be found in Section 3 and Section 4.
 In Section 5, we demonstrate the newly added definitions and 
 theorems for backward simulations which were not included in the submission but requested by the reviewers.
 
->[TODO: check hyperlink]
 **Notice**: if you are on [the main page](https://github.com/SJTU-PLV/compcertoc-pldi25-artifact)
 of this github repository, some
 hyperlinks may lead to "Not Found" errors. Please navigate the README.md file 
@@ -46,7 +45,7 @@ We list the definitions, lemmas and theorems from each section of the paper belo
 
 - Definition 3.2 from Section 3.2 (line 429) is defined as [cklr](CompCertOC/cklr/CKLR.v#L43) in [cklr/CKLR.v](CompCertOC/cklr/CKLR.v).
 
-- Definition 3.3 from Section 3.3 (line 433) is defined as [injp](CompCertOC/cklr/InjectFootprint.v#286) in [cklr/InjectFootprint.v](CompCertOC/cklr/InjectFootprint.v). 
+- Definition 3.3 from Section 3.3 (line 433) is defined as [injp](CompCertOC/cklr/InjectFootprint.v#L286) in [cklr/InjectFootprint.v](CompCertOC/cklr/InjectFootprint.v). 
 
 - Definition 3.4 from Section 3.3 (line 444) is
 defined as [cc_c_asm_injp](CompCertOC/driver/CA.v#L184) in [driver/CA.v](CompCertOC/driver/CA.v).
@@ -59,7 +58,7 @@ defined as [cc_c_asm_injp](CompCertOC/driver/CA.v#L184) in [driver/CA.v](CompCer
   is defined in module [Sup](CompCertOC/common/Memory.v#L116) with newly added operations in [common/Memory.v](CompCertOC/common/Memory.v).
 
 - Definition 4.1 from Section 4.2 (line 493) corresponds to the two accessibilities 
-  [injp_acci](CompCertOC/concur/Injp.v#53) and [injp_acce](CompCertOC/concur/Injp.v#72)
+  [injp_acci](CompCertOC/concur/Injp.v#L53) and [injp_acce](CompCertOC/concur/Injp.v#72)
   from the Coq file [concur/Injp.v](CompCertOC/concur/Injp.v)
 
 - Definition 4.2 from Section 4.2 (line 511) is defined as 
@@ -68,23 +67,23 @@ defined as [cc_c_asm_injp](CompCertOC/driver/CA.v#L184) in [driver/CA.v](CompCer
   [World](CompCertOC/concur/CallconvBig.v#L70) in the same file. 
 
 - Definition 4.3 from Section 4.2 (line 524) is defined as 
-  [fsim_properties](CompCertOC/concur/CallconvBig.v#191) in the same file.
+  [fsim_properties](CompCertOC/concur/CallconvBig.v#L191) in the same file.
 
 - Definition 4.4 from Section 4.2 (line 580) can be found as
-  [cc_c_asm_injp_new](CompCertOC/concur/CAnew.v#81) in [concur/CAnew.v](CompCertOC/concur/CAnew.v).
+  [cc_c_asm_injp_new](CompCertOC/concur/CAnew.v#L81) in [concur/CAnew.v](CompCertOC/concur/CAnew.v).
 
 - Theorem 4.5 from Section 4.3.1 (line 599) corresponds to the lemma
-  [compose_simulation](CompCertOC/concur/HCompBig.v#357) in 
+  [compose_simulation](CompCertOC/concur/HCompBig.v#L357) in 
   [concur/HCompBig.v](CompCertOC/concur/HCompBig.v).
 
 - Definition 4.6 from Section 4.3.1 (line 612) corresponds to the definitions
-  [Concur_sem_c](CompCertOC/concur/CMulti.v#281) and 
-  [Concur_sem_asm](CompCertOC/concur/AsmMulti.v#266) in
+  [Concur_sem_c](CompCertOC/concur/CMulti.v#L281) and 
+  [Concur_sem_asm](CompCertOC/concur/AsmMulti.v#L266) in
   [concur/CMulti.v](CompCertOC/concur/CMulti.v) and
   [concur/AsmMulti.v](CompCertOC/concur/AsmMulti.v) for C and assembly, respectively.
 
 - Theorem 4.7 from Section 4.3.1 (line 629) is proved as 
-  [Opensim_to_Globalsim](CompCertOC/concur/ThreadLinking.v#2925) in
+  [Opensim_to_Globalsim](CompCertOC/concur/ThreadLinking.v#L2925) in
   [concur/ThreadLinking.v](CompCertOC/concur/ThreadLinking.v).
 
 - Theorem 4.8 from Section 4.3.2 (line 651) corresponds to the lemma
