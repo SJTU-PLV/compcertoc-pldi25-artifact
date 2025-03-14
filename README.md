@@ -434,7 +434,7 @@ in the same file.
   
 - With the above results, we updated the correctness property of our
   running example in the form of 
-  threaded backward simulation ([module_linking_back]((CompCertOC/cdemo/Demoproof.v#L254))
+  threaded backward simulation ([module_linking_back]((CompCertOC/cdemo/Demoproof.v#L254)))
   and closed backward simulation between multi-threaded semantics ([thread_linking_back](CompCertOC/cdemo/Demoproof.v#L262)) in the Coq file 
   [cdemo/Demoproof.v](CompCertOC/cdemo/Demoproof.v).
   Note that the closed backward simulation 
