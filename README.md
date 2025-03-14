@@ -5,10 +5,10 @@
 This artifact contains CompCertOC, an extension 
 of CompCertO that provides verified compositional
 compilation of multi-threaded programs with shared 
-stacks. The extended CompCertO is based on CompCert
+stacks. Both CompCertOC and CompCertO are based on CompCert
 version 3.13. Our implementation is located in the
 [`CompCertOC`](CompCertOC) directory. For comparsion,
-we also upload a copy of CompCertO in the directory
+we also provide a copy of CompCertO in the directory
 [`CompCertO`](CompCertO).
 
 This artifact accompanies the following paper:
@@ -19,8 +19,8 @@ This artifact accompanies the following paper:
 We first list the corresponding formal definitions and theorems
 of the claims we made in the submission in Section 2. The instructions
 for building and evaluationg can be found in Section 3 and Section 4.
-In section 5, we demonstrate the newly added definitions and 
-theorems for backward simulations which are not included in the submission.
+In Section 5, we demonstrate the newly added definitions and 
+theorems for backward simulations which were not included in the submission but requested by the reviewers.
 
 >[TODO: check hyperlink]
 **Notice**: if you are on [the main page](https://github.com/SJTU-PLV/direct-refinement-popl24-artifact)
@@ -48,7 +48,7 @@ We list the definitions, lemmas and theorems from each section of the paper belo
 
 - Definition 3.2 from Section 3.2 (line 429) is defined as `cklr` in [cklr/CKLR.v](CompCertOC/cklr/CKLR.v).
 
-- Definition 3.3 from Section 3.3 (line 433) is defined as `injp` in [cklr/InjectFootprint.v](CompCertOC/cklr/InjectFootprint.v). Note that it is not actually used is this work.
+- Definition 3.3 from Section 3.3 (line 433) is defined as `injp` in [cklr/InjectFootprint.v](CompCertOC/cklr/InjectFootprint.v). 
 
 - Definition 3.4 from Section 3.3 (line 444) is
 defined as `cc_c_asm_injp` in [driver/CA.v](CompCertOC/driver/CA.v).
@@ -400,33 +400,46 @@ CompCertO.
 
 ## 5. Newly added contents: backward simulation 
 
-Following the advice of the reviewers, we implement the 
-threaded backward simulation and the thread linking theorem
-in the form of backward simulation.
+As the reviewers point out: backward simulation is the gold standard
+of compiler correctness, while we only talk about forward simulation
+in the submission. We have shown that (threaded) backward simulation
+can be derived by flipping our forward simulation following the
+standard practice in CompCert. The implementation of our threaded
+backward simulation and their thread linking theorem is listed as
+follows.
 
 - The threaded backward simulation is defined as 
 [bsim_properties](CompCertOC/concur/CallconvBig.v#733)
 in [concur/CallconvBig.v](CompCertOC/concur/CallconvBig.v).
 
 - The theorem for flipping threaded forward simulation into backward
-simulation is proved as [forward_to_backward_simulation](CompCertOC/concur/CallconvBig.v#L1099) in the same file.
+simulation is defined as
+[forward_to_backward_simulation](CompCertOC/concur/CallconvBig.v#L1099)
+in the same file.
 
 - The compiler correctness theorem 
  [transf_clight_program_correct](CompCertOC/driver/Compiler.v#L549) in
  the Coq file [driver/Compiler.v](CompCertOC/driver/Compiler.v) 
- states both forward and backward simulations.
+ contains both forward and backward simulations.
  
 - We are able to prove the correctness of thread linking in the form
-  of backward simulation as [BSIM](CompCertOC/concur/ThreadLinkingBack.v#L3321) in [concur/ThreadLinkingBack.v](CompCectOC/concur/ThreadLinkingBack.v). Several extra requirements of the *source* semantics are needed for this linking. The lemmas stating that any Clight programs can 
-  satisfy these requirements can be found at the end of the same file.
+  of backward simulation as
+  [BSIM](CompCertOC/concur/ThreadLinkingBack.v#L3321) in
+  [CompCertOC/concur/ThreadLinkingBack.v](CompCectOC/concur/ThreadLinkingBack.v).
+  To apply this theorem, the soundness properties `determinate_big
+  OpenC`, `after_external_receptive OpenC` and
+  `initial_state_receptive OpenC` are needed for the source semantics,
+  which we have proven for the Clight programs at the end of the same
+  file.
   
-- Using the results above, we updated the correctness of our
-  running example in the forms of 
+- With the above results, we updated the correctness property of our
+  running example in the form of 
   threaded backward simulation ([module_linking_back]((CompCertOC/cdemo/Demoproof.v#L254))
   and closed backward simulation between multi-threaded semantics ([thread_linking_back](CompCertOC/cdemo/Demoproof.v#L262)) in the Coq file 
   [cdemo/Demoproof.v](CompCertOC/cdemo/Demoproof.v).
-  Note that the closed backward simulation here
-  is the same definition used in vanilla CompCert for closed programs.
+  Note that the closed backward simulation 
+  is the exact same one in vanilla CompCert for closed programs. Therefore, we have successfully linked our compiler correctness with
+  the standard backward simulation in CompCert.
   
   
   
