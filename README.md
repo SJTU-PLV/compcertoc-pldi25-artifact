@@ -742,7 +742,12 @@ the paper.  The primitive `yield` is not included in this files because we are r
 *preemptive* programs here.
 As mentioned in our camera-ready paper, we focus on the *cooperative semantics* and the connection
 with preemptive semantics is left for future work.
+Although the compilation pass `SimplExpr` from C to Clight is not verified in this artifact 
+(as mentioned in the paper), we have successfully composed this pass with the current compiler
+correctness in the form of threaded backward simulation. Interested readers can see the code
+[here](https://github.com/SJTU-PLV/CompCert/tree/Direct-MultiThread).
 
+Therefore, the verified compilation of this example is supported by CompCertOC to a certain degree.
 
 Similarly, run `make` and `./main` in [examples/fig1](CompCertOC/examples/fig1) to see the result 
 of the simple example in Fig. 1 of the paper.
@@ -761,6 +766,7 @@ thread may split into two sub-threads to form a binary tree for solving some pro
 
 Similarly, they can be compiled and run using `make` and `./main` in their directories. 
 You can also write your own programs and compile them using CompCertOC(`ccomp`).
+
   
   
   
