@@ -35,16 +35,213 @@ to ensure that the hyperlinks work properly.
 
 ## 2. Structure of this Artifact
 
+As mentioned above, this artifact is developed based on CompCert and CompCertO.
+We first briefly introduce CompCert and CompcertO and then present our 
+implementation for supporting multi-threaded programs in this artifact.
+
 ### 2.1. CompCert
+
+CompCert is the-state-of-art verified C compiler. The documentation of the 
+latest version of it can be found [here](https://compcert.org/doc/).
+The file structure described in this document is mainly preserved in CompCertO and 
+CompCertOC.
 
 ### 2.2. CompCertO
 
+CompCertO is a version of CompCert developed by the [Yale FLINT group](http://flint.cs.yale.edu). The semantic model of CompCert has been extended to describe the behavior of individual compilation units and enable compositional verification.
+
+CompCertOC is based on a later version of CompCertO with Direct Refinements which
+introduces `injp` for protection of private memory regions. You can find the 
+documentation of this version, i.e. the code in `CompCertO` directory 
+[here](https://https://github.com/SJTU-PLV/direct-refinement-popl24-artifact/blob/main/README.md).
+
+
 ### 2.3. CompCertOC
+
+Most of the developments of CompCertOC are located in the [concur](CompCertOC/concur)
+directory. We introduce these *new* contents according to the presentation order of the [camera-ready](camera-ready.pdf) paper.
+
+- The multi-threaded memory model (Section 4.1) is defined in [common/Memory.v](CompCertOC/common/Memory.v). The `sup` type is defined as:
+```
+Record sup' : Type :=
+  mksup
+    {
+      stacks : list (list positive);
+      tid : nat;
+      
+      tid_valid: (0 < tid < (length stacks))%nat;
+    }.
+```
+  
+- For Threaded Kripke Memory Relations (Section 4.2),
+  the accessibilities of `tinjp` are
+  defined in [concur/Injp.v](CompCertOC/concur/Injp.v).
+  For the internal accessibility `injp_acci`:
+
+```
+   Inductive injp_acci : relation injp_world :=
+    injp_acci_intro : forall (f : meminj) (m1 m2 : mem) (Hm : Mem.inject f m1 m2) (f' : meminj) 
+		(m1' m2' : mem) (Hm' : Mem.inject f' m1' m2')
+		...
+		Mem.unchanged_on_i (loc_unmapped f) m1 m1' ->
+		Mem.unchanged_on_i (loc_out_of_reach f m1) m2 m2' ->
+		inject_incr f f' ->
+		...
+		injp_acci (injpw f m1 m2 Hm) (injpw f' m1' m2' Hm').
+```
+
+Here the selected `Mem.unchanged_on_i` and `inject_incr` correspond to the formula
+in our paper. Other properties are omitted for simplicity. Note that they are 
+verified to be satisfied by all the compiler passes using `tinjp`.
+
+- Threaded forward simulation (Section 4.3) is defined in 
+  [concur/CallconvBig.v](CompCertOC/concur/CallconvBig.v).
+  
+  - The threaded simulation convention (Def4.2) is defined as follows:
+  ```
+  
+  Record callconv {li1 li2} :=
+  mk_callconv {
+    ccworld : Type;
+    ccworld_world : World ccworld;
+    match_senv: ccworld -> Genv.symtbl -> Genv.symtbl -> Prop;
+    match_query: ccworld -> query li1 -> query li2 -> Prop;
+    match_reply: ccworld -> reply li1 -> reply li2 -> Prop;
+
+	...
+    }.
+  ```
+  The TKMR and the operations `get` and `set` are defined in the typeclass `World` as follows:
+  ```
+  Class Lens (T A: Type) :=
+  {
+    get : T -> A;
+    set : T -> A -> T;
+    get_set : forall t a, get (set t a) = a;
+    set_get : forall t, set t (get t) = t;
+    set_set : forall t a1 a2, set (set t a1) a2 = set t a2;
+  }.
+  
+  Class World (T: Type) :=
+  {
+    w_state : Type;
+    w_lens : Lens T w_state;
+    w_acci : w_state -> w_state -> Prop;
+    w_acce : w_state -> w_state -> Prop;
+    w_acci_trans : PreOrder w_acci;
+  }.
+
+  ```
+  Here `w_state` is the sub-world type, the opeartions are defined in `w_lens`.
+  
+  - Threaded forward simulation (Definition 4.3) is formalized as follows:
+  ```
+    Record fsim_properties
+           (L1: lts li1 li1 state1) (L2: lts li2 li2 state2)
+           (index: Type) (order: index -> index -> Prop)
+           (match_states: gw_type -> index -> state1 -> state2 -> Prop) :=
+      {
+        fsim_match_valid_query:
+        forall q1 q2, match_query cc wb q1 q2 ->
+                 valid_query L2 q2 = valid_query L1 q1;
+        fsim_match_initial_states:
+          forall q1 q2 s1, match_query cc wb q1 q2 -> initial_state L1 q1 s1 ->
+          match_senv cc wb se1 se2 ->
+          exists i, exists s2, initial_state L2 q2 s2 /\ match_states (get wb) i s1 s2;
+        fsim_match_final_states:
+          forall gw i s1 s2 r1, match_states gw i s1 s2 -> final_state L1 s1 r1 ->
+          exists r2 gw', final_state L2 s2 r2 /\ (get wb) o-> gw' /\ gw *-> gw' /\
+          match_reply cc (set wb gw') r1 r2;
+        fsim_match_external:
+          forall gw i s1 s2 q1, match_states gw i s1 s2 -> at_external L1 s1 q1 ->
+          exists wa q2 , at_external L2 s2 q2 /\ gw *-> (get wa) /\
+          match_query cc wa q1 q2 /\ match_senv cc wa se1 se2 /\
+          forall r1 r2 s1' gw'', (get wa) o-> gw'' -> match_reply cc (set wa gw'') r1 r2 ->
+          after_external L1 s1 r1 s1' ->
+          exists i' s2', after_external L2 s2 r2 s2' /\
+          match_states gw'' i' s1' s2';
+          (* exists gw''' , gw'' *-> gw''' /\ match_states gw''' i' s1' s2'; (*The problem of va passes*) *)
+        fsim_simulation:
+          forall s1 t s1', Step L1 s1 t s1' ->
+          forall gw i s2, match_states gw i s1 s2 ->
+          exists i', exists s2', (Plus L2 s2 t s2' \/ (Star L2 s2 t s2' /\ order i' i)) /\
+          match_states gw i' s1' s2';
+      }.
+  ```
+- Compositionality of Threaded Forward Simulations (Section 4.4)
+  is defined in several files.
+  - The concatenation of threaded simulations (Theorem 4.4) is proved in [concur/VCompBig.v](CompCertOC/concur/VCompBig.v) as follows:
+  ```
+  Lemma st_fsim_vcomp
+  `(cc1: callconv lis lin) `(cc2: callconv lin lif)
+  (Ls: semantics lis lis) (Ln: semantics lin lin) (Lf: semantics lif lif):
+  forward_simulation cc1 Ls Ln ->
+  forward_simulation cc2 Ln Lf ->
+  forward_simulation (cc_compose cc1 cc2) Ls Lf.
+  ```
+  - The refinement of threaded simulation conventions (Fig 12) is defined
+  in [concur/CallConvAlgebra.v](CompCertOC/concur/CallConvAlgebra.v) as follows:
+  ```
+  Record cctrans' {li1 li2} (cc1 cc2: callconv li1 li2) :=
+    Callconv_Trans{
+        match12 : gworld cc1 -> gworld cc2 -> Prop;
+        big_step_incoming : ccref_incoming cc1 cc2 match12;
+        big_step_outgoing : ccref_outgoing cc1 cc2 match12;
+      }.
+	  
+  ```
+  Note that we use `match12` to embed Fig 12(c) into `big_step_incoming` (Fig 12(a))
+  and `big_step_outgoing` (Fig 12(b)).
+  
+  - Theorem 4.5 is proved in the same file as:
+  ```
+  Lemma open_fsim_cctrans' {li1 li2: language_interface}:
+  forall (cc1 cc2: callconv li1 li2) L1 L2,
+    forward_simulation cc1 L1 L2 ->
+    cctrans' cc1 cc2 ->
+    forward_simulation cc2 L1 L2.
+  ```
+  
+  - The refinement of `tinjp` (Theorem 4.6) is proved in [concur/CallConvLibs.v](CompCertOC/concur/CallConvLibs.v) as follows:
+  ```
+  Lemma cctrans_injp_comp : cctrans (cc_compose c_injp c_injp) (c_injp).
+  ```
+  
+  - The correctness of module linking (Theorem 4.7) is proved in [concur/HCompBig.v](CompCertOC/concur/HCompBig.v) as follows:
+  ```
+  Lemma compose_simulation {li1 li2} (cc: GS.callconv li1 li2) L1a L1b L1 L2a L2b L2:
+  GS.forward_simulation cc L1a L2a ->
+  GS.forward_simulation cc L1b L2b ->
+  compose L1a L1b = Some L1 ->
+  compose L2a L2b = Some L2 ->
+  GS.forward_simulation cc L1 L2.
+  ```
+
+  - The threaded linking function for C and assembly are defined in [concur/CMulti.v](CompCertOC/concur/CMulti.v) and [concur/AsmMulti.v](CompCertOC/concur/AsmMulti.v). The correctness of thread linking (Theorem 4.8) is proved in [concur/ThreadLinking.v](CompCertOC/concur/ThreadLinking.v) as follows:
+  ```
+  Theorem Opensim_to_Globalsim : forall OpenC OpenA,
+    GS.forward_simulation cc_compcert OpenC OpenA ->
+    Closed.forward_simulation (Concur_sem_c OpenC) (Concur_sem_asm OpenA).
+  ```
+  
+- For the passes listed in Table 1, the proofs of them can be found in the [concur](CompCertOC/concur) directory. For example, [concur/SimplLocalsproofC.v](CompCertOC/concur/SimplLocalsproofC.v) proves the `SimplLocals` pass using threaded simulation.
+
+- Simulation Conventions and Semantic invariants (Section 5.1.1)
+
+- The properties of refining threaded simulation conventions (Section 5.1.2)
+
+
+- Compiler
+- Running Example
+
 
 
 ## 3. List of Claims
 
-We list the definitions, lemmas and theorems from each section of the paper below along with the references to their corresponding Coq formalization in the artifact.
+We list the definitions, lemmas and theorems from each section of the 
+[submission](pldi25-paper146-submission.pdf)
+below along with the references to their corresponding Coq formalization 
+in the artifact.
 
 ### Section 2
 
