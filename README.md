@@ -730,11 +730,17 @@ You can find the running example of our paper in [examples/running_example](Comp
 Run `make` in this directory to compile the source files and link them into an executable file `main`. You can see the commands using `ccomp` in the terminal as follows:
 
 ```
-\\todo
+ccomp -g -Wall -c client.c -o client.o
+ccomp -g -Wall -c server.c -o server.o
+ccomp -g -Wall -c encrypt.s -o encrypt.o
+ccomp -o main client.o server.o encrypt.o
+Done.
 ```
 
 After compilation, run `./main` to execute the compiled program:
 ```
+./main
+11; 8; 9; 14; 15; 
 ```
 
 Note that the source files (`client.c`, `server.c` and `encrypt.s`) correspond to Fig.2 in
