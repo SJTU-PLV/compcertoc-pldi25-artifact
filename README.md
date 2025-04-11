@@ -53,7 +53,7 @@ CompCertO is a version of CompCert developed by the [Yale FLINT group](http://fl
 CompCertOC is based on a later version of CompCertO with Direct Refinements which
 introduces `injp` for protection of private memory regions. You can find the 
 documentation of this version
-[here](https://https://github.com/SJTU-PLV/direct-refinement-popl24-artifact/blob/main/README.md) which describes the code in `CompCertO` directory of this artifact.
+[here](https://github.com/SJTU-PLV/direct-refinement-popl24-artifact/blob/main/README.md) which describes the code in `CompCertO` directory of this artifact.
 
 
 ### 2.3. CompCertOC
@@ -230,7 +230,7 @@ verified to be satisfied by all the compiler passes using `tinjp`.
 - For the passes listed in Table 1, the proofs of them can be found in the [concur](CompCertOC/concur) directory. For example, [concur/SimplLocalsproofC.v](CompCertOC/concur/SimplLocalsproofC.v) proves the `SimplLocals` pass using threaded simulation.
 
 - The properties of refining threaded simulation conventions (Section 5.2) can be found
-in [concur/CallConvLibs.v](CompCertOC/concur/CallConvLibs.v), [concur/StackRefine.v](CompCertOC/concur/StackRefine.v) and [concur/Composition.v](CompCertOC/concur/Composition.v). The detailed position of these properties are listed in Section 3 below.
+in [concur/CallConvLibs.v](CompCertOC/concur/CallConvLibs.v), [concur/StackingRefine.v](CompCertOC/concur/StackingRefine.v) and [concur/Composition.v](CompCertOC/concur/Composition.v). The detailed position of these properties are listed in Section 3 below.
 
 - The composing of threaded forward simulations (Section 5.3) is proved in [concur/Composition.v](CompCertOC/concur/Composition.v) as follows:
 ```
@@ -719,7 +719,7 @@ in the same file.
 We demonstrate how to use CompCertOC to compile the running example and some other examples
 in [examples](CompCertOC/examples) directory.
 Make sure that you have already run the command `make install` such that `ccomp` is installed.
-The usage of `ccomp` can be found at the CompCert manual page [here](compcert.org/man).
+The usage of `ccomp` can be found at the CompCert manual page [here](https://compcert.org/man/).
 <!-- The commands for compiling the examples is given, you can also try to write some new code using  -->
 <!-- `pthread.t` and compile it using CompCertOC. -->
 
@@ -742,6 +742,7 @@ the paper.  The primitive `yield` is not included in this files because we are r
 *preemptive* programs here.
 As mentioned in our camera-ready paper, we focus on the *cooperative semantics* and the connection
 with preemptive semantics is left for future work.
+
 Although the compilation pass `SimplExpr` from C to Clight is not verified in this artifact 
 (as mentioned in the paper), we have successfully composed this pass with the current compiler
 correctness in the form of threaded backward simulation. Interested readers can see the code
