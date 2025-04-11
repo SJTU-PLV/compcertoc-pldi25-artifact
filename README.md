@@ -33,11 +33,11 @@ hyperlinks may lead to "Not Found" errors. Please navigate the README.md file
 to ensure that the hyperlinks work properly.
 
 
-## 2. Structure of this Artifact
+## 2. Structure of this artifact
 
 As mentioned above, this artifact is developed based on CompCert and CompCertO.
-We first briefly introduce CompCert and CompcertO and then present our 
-implementation for supporting multi-threaded programs in this artifact.
+We first briefly introduce the structure of CompCert and CompcertO.
+We then present the structure of CompCertOC which supports multi-threaded programs.
 
 ### 2.1. CompCert
 
@@ -52,14 +52,16 @@ CompCertO is a version of CompCert developed by the [Yale FLINT group](http://fl
 
 CompCertOC is based on a later version of CompCertO with Direct Refinements which
 introduces `injp` for protection of private memory regions. You can find the 
-documentation of this version, i.e. the code in `CompCertO` directory 
-[here](https://https://github.com/SJTU-PLV/direct-refinement-popl24-artifact/blob/main/README.md).
+documentation of this version
+[here](https://https://github.com/SJTU-PLV/direct-refinement-popl24-artifact/blob/main/README.md) which describes the code in `CompCertO` directory of this artifact.
 
 
 ### 2.3. CompCertOC
 
 Most of the developments of CompCertOC are located in the [concur](CompCertOC/concur)
 directory. We introduce these *new* contents according to the presentation order of the [camera-ready](camera-ready.pdf) paper.
+
+#### Threaded simulation and its compositionality 
 
 - The multi-threaded memory model (Section 4.1) is defined in [common/Memory.v](CompCertOC/common/Memory.v). The `sup` type is defined as:
 ```
@@ -223,16 +225,77 @@ verified to be satisfied by all the compiler passes using `tinjp`.
     GS.forward_simulation cc_compcert OpenC OpenA ->
     Closed.forward_simulation (Concur_sem_c OpenC) (Concur_sem_asm OpenA).
   ```
-  
+
+#### Threaded simulations in CompCertOC
 - For the passes listed in Table 1, the proofs of them can be found in the [concur](CompCertOC/concur) directory. For example, [concur/SimplLocalsproofC.v](CompCertOC/concur/SimplLocalsproofC.v) proves the `SimplLocals` pass using threaded simulation.
 
-- Simulation Conventions and Semantic invariants (Section 5.1.1)
+- The properties of refining threaded simulation conventions (Section 5.2) can be found
+in [concur/CallConvLibs.v](CompCertOC/concur/CallConvLibs.v), [concur/StackRefine.v](CompCertOC/concur/StackRefine.v) and [concur/Composition.v](CompCertOC/concur/Composition.v). The detailed position of these properties are listed in Section 3 below.
 
-- The properties of refining threaded simulation conventions (Section 5.1.2)
+- The composing of threaded forward simulations (Section 5.3) is proved in [concur/Composition.v](CompCertOC/concur/Composition.v) as follows:
+```
+Definition cc_compcert : GS.callconv li_c li_asm :=
+       ro @ wt_c @
+       cc_c_asm_injp_new @ asm_ext.
 
+Lemma cc_collapse :
+  cctrans
+    ( ro @ c_injp @ 
+      c_injp @
+      (wt_c @ c_ext) @ c_ext @
+      c_injp @
+      c_ext @ c_injp @
+      (ro @ c_injp) @ (ro @ c_injp) @ (ro @ c_injp) @
+      (wt_c @ c_ext @ cc_c_locset) @            (* Alloc *)
+      locset_ext @                              (* Tunneling *)
+      (wt_loc @ cc_stacking_injp) @ (* Stacking *)
+      (mach_ext @ cc_mach_asm)
+    )
+    cc_compcert.
+```
+- The compiler correctness of CompCertOC is proved in [driver/Compiler.v](CompCertOC/driver/Compiler.v) as follows:
+```
+Theorem transf_clight_program_correct:
+  forall p tp,
+  transf_clight_program p = OK tp ->
+  GS.forward_simulation cc_compcert (Clight.semantics1 p) (Asm.semantics tp) /\
+    GS.backward_simulation cc_compcert (Clight.semantics1 p) (Asm.semantics tp).
+Proof.
+  intros. apply clight_semantic_preservation. apply transf_clight_program_match; auto.
+Qed.
+```
 
-- Compiler
-- Running Example
+Note that this theorem also claims that threaded backward simulation holds.
+
+#### Verifying the running example
+
+The running example is formalized in the [cdemo](CompCertOC/cdemo) directory.
+
+- The specitificaion of `encrypt.s` (Definition 6.1) is defined in [cdemo/EncryptSpec.v](CompCertOC/cdemo/EncryptSpec.v)
+  and the proof (Lemma 6.2) can be found in [cdemo/Encryptproof.v](CompCertOC/cdemo/Encryptproof.v) as:
+  ```
+  Theorem correctness_L_E :
+  forward_simulation cc_compcert L_E (Asm.semantics encrypt_s).
+  ```
+
+- The equivalence of syntactic and semantics linking of assembly modules (Theorem 6.3)
+is defined in [x86/AsmLinking.v](CompCertOC/x86/AsmLinking.v) as follows:
+```
+   Lemma asm_linking:
+   forward_simulation cc_id cc_id
+      (HCompBig.semantics L (erase_program p))
+      (semantics p).
+```
+
+- The top-level correctness of the running example (Lemma 6.4 and Lemma 6.5) are proved
+in [cdemo/Demoproof.v](CompCertOC/cdemo/Demoproof.v) as follows:
+```
+	Theorem module_linking_correct :
+	forward_simulation cc_compcert c_spec (Asm.semantics asm_prog).
+
+	Theorem thread_linking_back :
+    Closed.backward_simulation (Concur_sem_c c_spec) (Concur_sem_asm (Asm.semantics asm_prog)).
+```
 
 
 
@@ -651,13 +714,13 @@ in the same file.
   the standard backward simulation in CompCert.
   
   
-## 7. Compile and Verify examples
+## 7. Compile and verify examples
 
 We demonstrate how to use CompCertOC to compile the running example and 
-### 7.1 Running Example
+### 7.1 Running examples
 
 
-### 7.2 Additional Example
+### 7.2 Additional examples
   
   
   
