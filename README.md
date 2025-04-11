@@ -13,14 +13,18 @@ we also provide a copy of CompCertO in the directory
 
 This artifact accompanies the following paper:
 
-> [*CompCertOC: Verified Compositional Compilation of Multi-Threaded Programs with Shared Stacks*](pldi25-paper146-submission.pdf). Ling Zhang, Yuting Wang, Yalun Liang and Zhong Shao
+> CompCertOC: Verified Compositional Compilation of Multi-Threaded Programs with Shared Stacks. Ling Zhang, Yuting Wang, Yalun Liang and Zhong Shao
 
-
-We first list the corresponding formal definitions and theorems
-of the claims we made in the submission in Section 2. The instructions
-for building and evaluating can be found in Section 3 and Section 4.
-In Section 5, we demonstrate the newly added definitions and 
-theorems for backward simulations which were not included in the submission but requested by the reviewers.
+We first introduce the structure of this artifact according to 
+the polished [camera-ready](camera-ready.pdf) version of our paper in Section 2.
+The formal definitions and theorems of the claims we made in the 
+[submission](pldi25-paper146-submission.pdf) can be found in Section 3.
+The instructions for building and evaluating can be found in Section 4 and Section 5.
+In Section 6, we present the newly added definitions and 
+theorems for backward simulations which were not included in the submission but 
+requested by the reviewers.
+Finally in Section 7, we demonstrate how to compile and verify the running example
+and some additional examples.
 
 **Notice**: if you are on [the main page](https://github.com/SJTU-PLV/compcertoc-pldi25-artifact)
 of this github repository, some
@@ -29,7 +33,16 @@ hyperlinks may lead to "Not Found" errors. Please navigate the README.md file
 to ensure that the hyperlinks work properly.
 
 
-## 2. List of Claims
+## 2. Structure of this Artifact
+
+### 2.1. CompCert
+
+### 2.2. CompCertO
+
+### 2.3. CompCertOC
+
+
+## 3. List of Claims
 
 We list the definitions, lemmas and theorems from each section of the paper below along with the references to their corresponding Coq formalization in the artifact.
 
@@ -166,9 +179,9 @@ as [thread_linking_correct](CompCertOC/cdemo/Demoproof.v#L80) in the Coq file [c
   the reviews. Therefore, the total amount of Coq is about 21.4k LOC. The details are discussed
   in the section "Evaluation" below.
 
-## 3. Installation
+## 4. Installation
 
-### 3.1. Requirements
+### 4.1. Requirements
 
 The compiler is based on CompCertO and CompCert v3.13. You can find the user manual of CompCert [here](http://compcert.inria.fr/man/).
 
@@ -196,7 +209,7 @@ We have tested the building on Linux with the following shell commands.
     eval $(opam env)
 ```
 
-### 3.2. Instructions for compiling the Coq code
+### 4.2. Instructions for compiling the Coq code
 
 Download the source code form github (If you are using the VM, ignore this).
 ```
@@ -237,7 +250,7 @@ implemented (based on open semantics) yet.
 
 You can run `make clean` to clean up the compiled code.
 
-### 3.3. Navigating the proofs
+### 4.3. Navigating the proofs
 
 After that, you can navigate the source code by using
 [emacs](https://www.gnu.org/software/emacs/) with
@@ -276,16 +289,16 @@ make
 sudo make install
 ```
 
-## 4. Evaluation
+## 5. Evaluation
 
-### 4.1. Soundness 
+### 5.1. Soundness 
 To check that there is no admit in the artifact, enter `DirectRefinement` and run
 ```
 find . -name "*.v" | xargs grep "Admitted"
 ```
 which should show no admit.
 
-### 4.2. Proof effort
+### 5.2. Proof effort
 
 The following are the instructions for reproducing the lines of code (LOC)
 of each part of our implementation according to Section 6.2 (line 879-899).
@@ -395,7 +408,7 @@ We used 1.1k lines of code to verify the running example.
 In summary, our Coq development contains (1.0+2.6+2.8+7.6+6.3+1.1 =) 21.4k lines of code on top of
 CompCertO.
 
-## 5. Newly added contents: backward simulation 
+## 6. Newly added contents: backward simulation 
 
 As the reviewers point out: backward simulation is the gold standard
 of compiler correctness, while we only talk about forward simulation
@@ -441,6 +454,13 @@ in the same file.
   the standard backward simulation in CompCert.
   
   
+## 7. Compile and Verify examples
+
+We demonstrate how to use CompCertOC to compile the running example and 
+### 7.1 Running Example
+
+
+### 7.2 Additional Example
   
   
   
