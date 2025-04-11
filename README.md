@@ -720,21 +720,26 @@ We demonstrate how to use CompCertOC to compile the running example and some oth
 in [examples](CompCertOC/examples) directory.
 Make sure that you have already run the command `make install` such that `ccomp` is installed.
 The usage of `ccomp` can be found at the CompCert manual page [here](compcert.org/man).
-The commands for compiling the examples is given, you can also try to write some new code using 
-`pthread.t` and compile it using CompCertOC.
+<!-- The commands for compiling the examples is given, you can also try to write some new code using  -->
+<!-- `pthread.t` and compile it using CompCertOC. -->
 
 
 ### 7.1 Running examples
 
-- You can find the running example in [examples/running_example](CompCertOC/examples/running_example). just run `make` in this directory will compile the source files and link them into a executable file `main`. You can also see the commands in the terminal.
+You can find the running example of our paper in [examples/running_example](CompCertOC/examples/running_example). 
+Run `make` in this directory to compile the source files and link them into an executable file `main`. You can see the commands using `ccomp` in the terminal as follows:
+
 ```
 \\todo
 ```
 
-After compilation, run `./main` to execute the compile program. 
+After compilation, run `./main` to execute the compiled program:
+```
+```
+
 Note that the source files (`client.c`, `server.c` and `encrypt.s`) correspond to Fig.2 in
 the paper.  The primitive `yield` is not included in this files because we are running 
-programs with *preemptive semantics*.
+*preemptive* programs here.
 As mentioned in our camera-ready paper, we focus on the *cooperative semantics* and the connection
 with preemptive semantics is left for future work.
 
@@ -749,13 +754,13 @@ multi-threaded programs supported by CompCertOC (i.e. they only use `pthread_cre
 `pthread_join`).
 
 - [examples/workers](CompCertOC/examples/workers) includes a classic multi-threaded program where
-the main thread creates several worker threades to finish the requests parallelly.
+the main thread creates several worker threads to finish some requests parallelly.
 
 - [examples/thread_tree](CompCertOC/examples/thread_tree) includes another program where each 
-thread may split into two sub threads to form a binary tree for multi-threaded recursive programs.
+thread may split into two sub-threads to form a binary tree for solving some problem recursively.
 
-They can also be compiled and run using `make` and `./main` in their directories. 
-You can also write your own programs and compile them using CompCertOC.
+Similarly, they can be compiled and run using `make` and `./main` in their directories. 
+You can also write your own programs and compile them using CompCertOC(`ccomp`).
   
   
   
