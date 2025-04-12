@@ -748,7 +748,7 @@ Run `make` in this directory to compile the source files and link them into an e
 ccomp -g -Wall -c client.c -o client.o
 ccomp -g -Wall -c server.c -o server.o
 ccomp -g -Wall -c encrypt.s -o encrypt.o
-ccomp -lpthread -o main client.o server.o encrypt.o
+ccomp -o main client.o server.o encrypt.o -lpthread
 Done.
 ```
 
