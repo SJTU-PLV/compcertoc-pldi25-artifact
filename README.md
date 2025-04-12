@@ -33,7 +33,7 @@ hyperlinks may lead to "Not Found" errors. Please navigate the README.md file
 to ensure that the hyperlinks work properly.
 
 
-## 2. Structure of this artifact
+## 2. Structure of the Artifact
 
 As mentioned above, this artifact is developed based on CompCert and CompCertO.
 We first briefly introduce the structure of CompCert and CompcertO.
@@ -43,14 +43,14 @@ We then present the structure of CompCertOC which supports multi-threaded progra
 
 CompCert is the-state-of-art verified C compiler. The documentation of the 
 latest version of it can be found [here](https://compcert.org/doc/).
-The file structure described in this document is mainly preserved in CompCertO and 
+The file structure described in this document is largely preserved in CompCertO and 
 CompCertOC.
 
 ### 2.2. CompCertO
 
-CompCertO is a version of CompCert developed by the [Yale FLINT group](http://flint.cs.yale.edu). The semantic model of CompCert has been extended to describe the behavior of individual compilation units and enable compositional verification.
+CompCertO is an extension of CompCert for supporting verified compositional compilation of heterogeneous modules. The semantic model of CompCert has been extended to describe the behavior of individual compilation units and enable compositional verification.
 
-CompCertOC is based on a later version of CompCertO with Direct Refinements which
+CompCertOC is based on a the latest version of CompCertO with Direct Refinements which
 introduces `injp` for protection of private memory regions. You can find the 
 documentation of this version
 [here](https://github.com/SJTU-PLV/direct-refinement-popl24-artifact/blob/main/README.md) which describes the code in `CompCertO` directory of this artifact.
@@ -59,9 +59,9 @@ documentation of this version
 ### 2.3. CompCertOC
 
 Most of the developments of CompCertOC are located in the [concur](CompCertOC/concur)
-directory. We introduce these *new* contents according to the presentation order of the [camera-ready](camera-ready.pdf) paper.
+directory. We introduce these *new* contents according to the presentation order in the [camera-ready](camera-ready.pdf) paper.
 
-#### Threaded simulation and its compositionality 
+#### Multi-threaded memory model, threaded Kripke memory relations, threaded simulations and their compositionality
 
 - The multi-threaded memory model (Section 4.1) is defined in [common/Memory.v](CompCertOC/common/Memory.v). The `sup` type is defined as:
 ```
@@ -78,7 +78,7 @@ Record sup' : Type :=
 - For Threaded Kripke Memory Relations (Section 4.2),
   the accessibilities of `tinjp` are
   defined in [concur/Injp.v](CompCertOC/concur/Injp.v).
-  For the internal accessibility `injp_acci`:
+  The internal accessibility `injp_acci` is defined as:
 
 ```
    Inductive injp_acci : relation injp_world :=
@@ -92,9 +92,8 @@ Record sup' : Type :=
 		injp_acci (injpw f m1 m2 Hm) (injpw f' m1' m2' Hm').
 ```
 
-Here the selected `Mem.unchanged_on_i` and `inject_incr` correspond to the formula
-in our paper. Other properties are omitted for simplicity. Note that they are 
-verified to be satisfied by all the compiler passes using `tinjp`.
+Here, `Mem.unchanged_on_i` and `inject_incr` correspond to the formula
+in our paper. Other properties are omitted for simplicity. Note that they are verified to be satisfied by all the compiler passes using `tinjp`.
 
 - Threaded forward simulation (Section 4.3) is defined in 
   [concur/CallconvBig.v](CompCertOC/concur/CallconvBig.v).
@@ -134,7 +133,7 @@ verified to be satisfied by all the compiler passes using `tinjp`.
   }.
 
   ```
-  Here `w_state` is the sub-world type, the opeartions are defined in `w_lens`.
+  Here `w_state` is the sub-world type, the operations are defined in `w_lens`.
   
   - Threaded forward simulation (Definition 4.3) is formalized as follows:
   ```
@@ -723,6 +722,22 @@ The usage of `ccomp` can be found at the CompCert manual page [here](https://com
 <!-- The commands for compiling the examples is given, you can also try to write some new code using  -->
 <!-- `pthread.t` and compile it using CompCertOC. -->
 
+Note that `ccomp` is the full compilation chain generated from
+CompCertOC which consists of the following passes:
+
+* Lexer, parser and preprocessor for generating CompCert C source code
+  (not fully verified).
+
+* `SimplExpr` for translating CompCert C into `Clight`.
+
+* The verified compilation chain from `Clight` to CompCert Asm
+  code. This is the `transf_clight_program` function in
+  `CompCertOC/driver/Compiler.v`.
+
+* Pretty printer of CompCert Asm to `*.s` files.
+
+* GNU assembler and linker for generating executable files.
+
 
 ### 7.1 Running examples
 
@@ -733,7 +748,7 @@ Run `make` in this directory to compile the source files and link them into an e
 ccomp -g -Wall -c client.c -o client.o
 ccomp -g -Wall -c server.c -o server.o
 ccomp -g -Wall -c encrypt.s -o encrypt.o
-ccomp -o main client.o server.o encrypt.o
+ccomp -lpthread -o main client.o server.o encrypt.o
 Done.
 ```
 
@@ -753,8 +768,6 @@ Although the compilation pass `SimplExpr` from C to Clight is not verified in th
 (as mentioned in the paper), we have successfully composed this pass with the current compiler
 correctness in the form of threaded backward simulation. Interested readers can see the code
 [here](https://github.com/SJTU-PLV/CompCert/tree/Direct-MultiThread).
-
-Therefore, the verified compilation of this example is supported by CompCertOC to a certain degree.
 
 Similarly, run `make` and `./main` in [examples/fig1](CompCertOC/examples/fig1) to see the result 
 of the simple example in Fig. 1 of the paper.
