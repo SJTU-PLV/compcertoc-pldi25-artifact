@@ -787,6 +787,4 @@ thread may split into two sub-threads to form a binary tree for solving some pro
 Similarly, they can be compiled and run using `make` and `./main` in their directories. 
 You can also write your own programs and compile them using CompCertOC(`ccomp`).
 
-  
-  
-  
+Finally, to verify any new example, you can follow the same steps for [verifying the running examples](#### Verifying the running example).
