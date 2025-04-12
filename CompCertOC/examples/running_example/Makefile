@@ -1,6 +1,7 @@
 TARGET = main
 CC = ccomp
 CFLAGS = -g -Wall
+LDFLAGS = -lpthread
 
 SOURCES = $(wildcard *.c *.s)
 OBJECTS = $(addprefix ,$(addsuffix .o,$(basename $(SOURCES))))
@@ -9,7 +10,7 @@ all: $(TARGET)
 	@echo "Done."
 
 $(TARGET): $(OBJECTS)
-	$(CC) -o $@ $^
+	$(CC) $(LDFLAGS) -o $@ $^
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
